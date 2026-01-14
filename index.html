@@ -2,12 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Tabbar Animation</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
   <style>
+  /* Prevent zoom on double tap and touch */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  button, .ayah-item, .surah-dropdown-item, .ayah-dropdown-item {
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+  }
+  
   .tabs {
       --background: #DAD7CD;
       --light-grey: #A3B18A;
@@ -47,6 +57,10 @@
             align-items: center;
     -webkit-transform-origin: center bottom;
             transform-origin: center bottom;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
   }
   .tabs label::before {
     content: "";
@@ -61,6 +75,19 @@
     display: block;
     position: absolute;
     top: -30px;
+  }
+  
+  /* Drop animation colors matching icon colors */
+  .tabs label[for="tab-01"]::before {
+    background: #87CEEB;
+  }
+  
+  .tabs label[for="tab-03"]::before {
+    background: #FF6B6B;
+  }
+  
+  .tabs label[for="tab-04"]::before {
+    background: #9B59B6;
   }
   .tabs label svg {
     width: 100%;
@@ -110,6 +137,22 @@
     -webkit-animation-duration: 3s;
             animation-duration: 3s;
   }
+  
+  /* Wave colors matching icon colors */
+  .tabs label[for="tab-01"] .wave::before,
+  .tabs label[for="tab-01"] .wave::after {
+    background-image: radial-gradient(circle at 6px -3px, transparent 6px, #87CEEB 6px);
+  }
+  
+  .tabs label[for="tab-03"] .wave::before,
+  .tabs label[for="tab-03"] .wave::after {
+    background-image: radial-gradient(circle at 6px -3px, transparent 6px, #FF6B6B 6px);
+  }
+  
+  .tabs label[for="tab-04"] .wave::before,
+  .tabs label[for="tab-04"] .wave::after {
+    background-image: radial-gradient(circle at 6px -3px, transparent 6px, #9B59B6 6px);
+  }
   .tabs label:nth-of-type(1) .wave {
     -webkit-clip-path: url(#path-icon-01);
             clip-path: url(#path-icon-01);
@@ -133,9 +176,30 @@
     -webkit-animation: drop-animation .35s ease-in both;
             animation: drop-animation .35s ease-in both;
   }
-  .tabs input:checked + label svg .icon {
-      stroke: #A3B18A;
+  /* Book Icon - Sky Blue */
+  .tabs label[for="tab-01"] svg .icon {
+    stroke: #87CEEB;
   }
+  .tabs input#tab-01:checked + label svg .icon {
+    stroke: #87CEEB;
+  }
+  
+  /* Heart Icon - Red */
+  .tabs label[for="tab-03"] svg .icon {
+    stroke: #FF6B6B;
+  }
+  .tabs input#tab-03:checked + label svg .icon {
+    stroke: #FF6B6B;
+  }
+  
+  /* Menu Icon - Purple */
+  .tabs label[for="tab-04"] svg .icon {
+    stroke: #9B59B6;
+  }
+  .tabs input#tab-04:checked + label svg .icon {
+    stroke: #9B59B6;
+  }
+  
   .tabs input:checked + label .wave:before {
     bottom: 0;
   }
@@ -347,6 +411,10 @@
       transition: all 0.3s;
       padding: 0;
       width: auto;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      user-select: none;
       height: auto;
     }
     
@@ -515,20 +583,24 @@
       border: 2px solid #A3B18A;
       width: 36px;
       height: 36px;
-      border-radius: 50%;
+      border-radius: 8px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 2px 8px rgba(163, 177, 138, 0.3);
       position: relative;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      user-select: none;
     }
     
     .font-size-btn span {
-      font-family: 'Georgia', 'Times New Roman', serif;
-      font-size: 20px;
-      font-weight: 400;
-      letter-spacing: 0.5px;
+      font-family: 'Arial', 'Helvetica', sans-serif;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1;
       position: relative;
       z-index: 1;
     }
@@ -550,6 +622,9 @@
       padding: 6px 12px;
       border-radius: 8px;
       transition: background-color 0.2s;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
     }
     
     .header .surah-name:hover {
@@ -585,6 +660,10 @@
       font-size: 18px;
       color: #000000;
       transition: background-color 0.2s;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      user-select: none;
     }
     
     .surah-dropdown-item:hover {
@@ -592,6 +671,77 @@
     }
     
     .surah-dropdown-item:last-child {
+      border-bottom: none;
+    }
+    
+    .ayah-selector {
+      position: relative;
+      margin: 0 15px;
+    }
+    
+    .header .ayah-number {
+      font-size: 18px;
+      font-weight: 600;
+      color: #000000;
+      text-align: center;
+      font-family: 'Amiri', 'Noto Sans Arabic', 'Arial', 'Segoe UI', 'Tahoma', sans-serif;
+      direction: rtl;
+      letter-spacing: 0;
+      cursor: pointer;
+      user-select: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+      min-width: 60px;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+    
+    .header .ayah-number:hover {
+      background-color: rgba(163, 177, 138, 0.2);
+    }
+    
+    .ayah-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: #DAD7CD;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(163, 177, 138, 0.3);
+      max-height: 400px;
+      overflow-y: auto;
+      width: 200px;
+      margin-top: 8px;
+      display: none;
+      z-index: 1001;
+      direction: rtl;
+      border: 1px solid #A3B18A;
+    }
+    
+    .ayah-dropdown.active {
+      display: block;
+    }
+    
+    .ayah-dropdown-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      border-bottom: 1px solid #A3B18A;
+      font-family: 'Amiri', 'Noto Sans Arabic', 'Arial', 'Segoe UI', 'Tahoma', sans-serif;
+      font-size: 18px;
+      color: #000000;
+      transition: background-color 0.2s;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      user-select: none;
+    }
+    
+    .ayah-dropdown-item:hover {
+      background-color: rgba(163, 177, 138, 0.3);
+    }
+    
+    .ayah-dropdown-item:last-child {
       border-bottom: none;
     }
     
@@ -644,9 +794,13 @@
       <div class="surah-name" id="currentSurah">سورة الفاتحة</div>
       <div class="surah-dropdown" id="surahDropdown"></div>
     </div>
+    <div class="ayah-selector">
+      <div class="ayah-number" id="currentAyahNumber">آية 1</div>
+      <div class="ayah-dropdown" id="ayahDropdown"></div>
+    </div>
     <div class="font-size-controls">
-      <button class="font-size-btn" id="decreaseFont"><span>A-</span></button>
-      <button class="font-size-btn" id="increaseFont"><span>A+</span></button>
+      <button class="font-size-btn" id="decreaseFont"><span>−</span></button>
+      <button class="font-size-btn" id="increaseFont"><span>+</span></button>
     </div>
   </header>
   
@@ -756,6 +910,14 @@
     const currentSurah = document.getElementById('currentSurah');
     const surahDropdown = document.getElementById('surahDropdown');
     const ayahContainer = document.getElementById('ayahContainer');
+    const currentAyahNumber = document.getElementById('currentAyahNumber');
+    const ayahDropdown = document.getElementById('ayahDropdown');
+    
+    // Function to convert number to Arabic-Indic numerals
+    function toArabicNumerals(num) {
+      const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+      return num.toString().split('').map(digit => arabicNumerals[parseInt(digit)]).join('');
+    }
     
     // Audio playback functions - multiple API sources
     function getAudioUrls(surahIndex, ayahIndex) {
@@ -1152,12 +1314,6 @@
       
       let html = '<div style="margin-bottom: 20px; padding: 15px; background: #FFFFFF; border-radius: 16px; text-align: center;"><h2 style="margin: 0; font-family: \'Amiri\', sans-serif; font-size: 24px; color: #000000; direction: rtl;">الآيات المحفوظة</h2></div>';
       
-      // Function to convert number to Arabic-Indic numerals
-      function toArabicNumerals(num) {
-        const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-        return num.toString().split('').map(digit => arabicNumerals[parseInt(digit)]).join('');
-      }
-      
       saved.forEach(item => {
         const surah = quranData[item.surahIndex];
         if (!surah) return;
@@ -1312,12 +1468,6 @@
       
       let html = '';
       
-      // Function to convert number to Arabic-Indic numerals
-      function toArabicNumerals(num) {
-        const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-        return num.toString().split('').map(digit => arabicNumerals[parseInt(digit)]).join('');
-      }
-      
       surah.ayas.forEach((ayah, index) => {
         let displayText = ayah.text;
         
@@ -1369,6 +1519,22 @@
       
       ayahContainer.innerHTML = html;
       
+      // Update current surah index
+      currentSurahIndex = surahIndex;
+      
+      // Close ayah dropdown if open
+      ayahDropdown.classList.remove('active');
+      
+      // Update ayah number in header to first ayah
+      if (surah.ayas && surah.ayas.length > 0) {
+        updateAyahNumber(surahIndex, 1);
+      }
+      
+      // Setup observer for tracking visible ayah
+      setTimeout(() => {
+        setupAyahObserver();
+      }, 100);
+      
       // Event listeners are already attached via delegation, no need to reattach
       
       // Add click handlers for saved ayah items
@@ -1382,11 +1548,57 @@
     }
     
     // Navigate to specific ayah in surah
+    // Function to update ayah number in header
+    function updateAyahNumber(surahIndex, ayahIndex) {
+      const arabicNumber = toArabicNumerals(ayahIndex);
+      currentAyahNumber.textContent = `آية ${arabicNumber}`;
+      currentAyahIndex = ayahIndex;
+    }
+    
+    // Intersection Observer to track current visible ayah
+    let ayahObserver = null;
+    
+    function setupAyahObserver() {
+      if (ayahObserver) {
+        ayahObserver.disconnect();
+      }
+      
+      const options = {
+        root: null,
+        rootMargin: '-20% 0px -50% 0px',
+        threshold: 0
+      };
+      
+      ayahObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const ayahId = entry.target.id;
+            const match = ayahId.match(/ayah-(\d+)-(\d+)/);
+            if (match) {
+              const surahIdx = parseInt(match[1]);
+              const ayahIdx = parseInt(match[2]);
+              if (surahIdx === currentSurahIndex) {
+                updateAyahNumber(surahIdx, ayahIdx);
+              }
+            }
+          }
+        });
+      }, options);
+      
+      // Observe all ayah elements
+      document.querySelectorAll('.ayah-item').forEach(item => {
+        ayahObserver.observe(item);
+      });
+    }
+    
     function navigateToAyah(surahIndex, ayahIndex) {
       console.log('navigateToAyah called:', surahIndex, ayahIndex);
       
       // Update surah name in header
       currentSurah.textContent = surahs[surahIndex - 1];
+      
+      // Update ayah number
+      updateAyahNumber(surahIndex, ayahIndex);
       
       // Switch to book tab (tab-01) without triggering change event
       const bookTab = document.getElementById('tab-01');
@@ -1461,6 +1673,39 @@
       if (!e.target.closest('.surah-selector')) {
         surahDropdown.classList.remove('active');
       }
+      if (!e.target.closest('.ayah-selector')) {
+        ayahDropdown.classList.remove('active');
+      }
+    });
+    
+    // Function to create ayah dropdown
+    function createAyahDropdown() {
+      ayahDropdown.innerHTML = '';
+      
+      const surah = quranData[currentSurahIndex];
+      if (!surah || !surah.ayas) {
+        return;
+      }
+      
+      // Create dropdown items for all ayahs in current surah
+      surah.ayas.forEach((ayah) => {
+        const item = document.createElement('div');
+        item.className = 'ayah-dropdown-item';
+        const arabicNumber = toArabicNumerals(ayah.index);
+        item.textContent = `آية ${arabicNumber}`;
+        item.addEventListener('click', () => {
+          navigateToAyah(currentSurahIndex, ayah.index);
+          ayahDropdown.classList.remove('active');
+        });
+        ayahDropdown.appendChild(item);
+      });
+    }
+    
+    // Toggle ayah dropdown on click
+    currentAyahNumber.addEventListener('click', (e) => {
+      e.stopPropagation();
+      createAyahDropdown();
+      ayahDropdown.classList.toggle('active');
     });
     
     // Font size controls
@@ -1515,6 +1760,26 @@
           displaySurah(surahIndex);
         }
       }
+    });
+    
+    // Prevent double-tap zoom
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (event) {
+      const now = (new Date()).getTime();
+      if (now - lastTouchEnd <= 300) {
+        event.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, false);
+    
+    // Prevent zoom on button clicks
+    document.querySelectorAll('button').forEach(button => {
+      button.addEventListener('touchstart', function(e) {
+        e.stopPropagation();
+      });
+      button.addEventListener('touchend', function(e) {
+        e.stopPropagation();
+      });
     });
     
     // Load Quran on page load
