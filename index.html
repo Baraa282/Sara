@@ -550,6 +550,124 @@
       color: #3a4a3a;
     }
     
+    /* Settings panel */
+    .settings-panel {
+      padding: 20px;
+      max-width: 500px;
+      margin: 0 auto;
+      direction: rtl;
+    }
+    .settings-title {
+      font-family: 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: #000000;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    body.dark-mode .settings-title { color: #e0e0e0; }
+    .settings-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    body.dark-mode .settings-card {
+      background: #2d2d2d;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    }
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(163, 177, 138, 0.25);
+      gap: 12px;
+    }
+    body.dark-mode .settings-row { border-bottom-color: rgba(255,255,255,0.1); }
+    .settings-row:last-child { border-bottom: none; }
+    .settings-label {
+      font-family: 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+      font-size: 18px;
+      color: #000000;
+    }
+    body.dark-mode .settings-label { color: #e0e0e0; }
+    .settings-font-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .settings-font-value {
+      font-family: 'Amiri', sans-serif;
+      font-size: 18px;
+      min-width: 32px;
+      text-align: center;
+      color: #3a4a3a;
+    }
+    body.dark-mode .settings-font-value { color: #b0b0b0; }
+    .settings-toggle {
+      width: 52px;
+      height: 28px;
+      border-radius: 14px;
+      background: #A3B18A;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .settings-toggle.off {
+      background: #ccc;
+    }
+    body.dark-mode .settings-toggle.off {
+      background: #555;
+    }
+    .settings-toggle::after {
+      content: '';
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #fff;
+      top: 2px;
+      right: 2px;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    .settings-toggle.off::after {
+      transform: translateX(24px);
+    }
+    .settings-about {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+    body.dark-mode .settings-about { color: #999; }
+    
+    /* Dark mode */
+    body.dark-mode {
+      --header-bg: #1e1e1e;
+      --main-bg: #121212;
+    }
+    body.dark-mode .header { background: #1e1e1e; }
+    body.dark-mode .main-content { background: #121212; }
+    body.dark-mode .ayah-container { background: #121212; }
+    body.dark-mode .header .surah-name,
+    body.dark-mode .header .ayah-number { color: #e0e0e0; }
+    body.dark-mode .ayah-item { background: #2d2d2d; }
+    body.dark-mode .ayah-text { color: #e0e0e0; }
+    body.dark-mode .ayah-marker { color: #A3B18A; }
+    body.dark-mode .loading { color: #b0b0b0; }
+    body.dark-mode .tabs { --background: #2d2d2d; --wave-color: #9B59B6; }
+    body.dark-mode .surah-dropdown,
+    body.dark-mode .ayah-dropdown { background: #2d2d2d; border-color: #444; }
+    body.dark-mode .surah-dropdown-item,
+    body.dark-mode .ayah-dropdown-item { color: #e0e0e0; border-color: #444; }
+    body.dark-mode .surah-dropdown-item:hover,
+    body.dark-mode .ayah-dropdown-item:hover { background: #3d3d3d; }
+    body.dark-mode .saved-ayah-item { background: #2d2d2d; }
+    
     .header {
       --background: #DAD7CD;
       --height: 55px;
@@ -605,6 +723,44 @@
       line-height: 1;
       position: relative;
       z-index: 1;
+    }
+    
+    .play-favorites-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 107, 107, 0.15);
+      color: #FF6B6B;
+      cursor: pointer;
+      font-family: 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+      font-size: 14px;
+      direction: rtl;
+      transition: background 0.2s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .play-favorites-btn:hover {
+      background: rgba(255, 107, 107, 0.25);
+    }
+    .play-favorites-btn:active {
+      transform: scale(0.97);
+    }
+    .play-favorites-btn.playing {
+      background: rgba(255, 107, 107, 0.3);
+      animation: pulse-fav 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse-fav {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.85; }
+    }
+    .play-favorites-btn svg {
+      flex-shrink: 0;
+    }
+    @media (max-width: 480px) {
+      .play-favorites-label { display: none; }
+      .play-favorites-btn { padding: 8px; }
     }
     
     .surah-selector {
@@ -800,10 +956,12 @@
       <div class="ayah-number" id="currentAyahNumber">آية 1</div>
       <div class="ayah-dropdown" id="ayahDropdown"></div>
     </div>
-    <div class="font-size-controls">
-      <button class="font-size-btn" id="decreaseFont"><span>−</span></button>
-      <button class="font-size-btn" id="increaseFont"><span>+</span></button>
-    </div>
+    <button class="play-favorites-btn" id="playFavoritesBtn" title="تشغيل الآيات المحفوظة فقط" style="display: none;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+      <span class="play-favorites-label">تشغيل المحفوظ</span>
+    </button>
   </header>
   
   <div class="main-content">
@@ -906,6 +1064,9 @@
     let currentAudio = null;
     let currentPlayingBtn = null;
     let isAutoPlaying = false;
+    let isPlayFavoritesOnly = false;
+    let favoriteAyahsQueue = [];
+    let currentFavoriteIndex = 0;
     let currentSurahIndex = 1;
     let currentAyahIndex = 1;
     
@@ -914,6 +1075,7 @@
     const ayahContainer = document.getElementById('ayahContainer');
     const currentAyahNumber = document.getElementById('currentAyahNumber');
     const ayahDropdown = document.getElementById('ayahDropdown');
+    const playFavoritesBtn = document.getElementById('playFavoritesBtn');
     
     // Function to convert number to Arabic-Indic numerals
     function toArabicNumerals(num) {
@@ -1129,31 +1291,29 @@
     function playNextAyah() {
       if (!isAutoPlaying) return;
       
-      const surah = quranData[currentSurahIndex];
-      if (!surah || !surah.ayas) return;
-      
-      // Move to next ayah
-      currentAyahIndex++;
-      
-      // If we've reached the end of the surah, stop
-      if (currentAyahIndex > surah.ayas.length) {
-        stopAutoPlay();
-        return;
+      if (isPlayFavoritesOnly) {
+        currentFavoriteIndex++;
+        if (currentFavoriteIndex >= favoriteAyahsQueue.length) {
+          currentFavoriteIndex = 0;
+        }
+        currentAyahIndex = favoriteAyahsQueue[currentFavoriteIndex];
+      } else {
+        const surah = quranData[currentSurahIndex];
+        if (!surah || !surah.ayas) return;
+        
+        currentAyahIndex++;
+        if (currentAyahIndex > surah.ayas.length) {
+          stopAutoPlay();
+          return;
+        }
       }
       
-      // Scroll to the ayah
       const ayahElement = document.getElementById(`ayah-${currentSurahIndex}-${currentAyahIndex}`);
       if (ayahElement) {
         ayahElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
       
-      // Find the play button for this ayah
-      const playButton = document.querySelector(`.play-stop-btn[data-surah="${currentSurahIndex}"][data-ayah="${currentAyahIndex}"]`);
-      
-      // Update button icons
       updatePlayStopButtons();
-      
-      // Play the next ayah
       playAyahAudio(currentSurahIndex, currentAyahIndex, null, true);
     }
     
@@ -1184,10 +1344,97 @@
       if (!isAutoPlaying) return;
       
       isAutoPlaying = false;
+      isPlayFavoritesOnly = false;
+      favoriteAyahsQueue = [];
+      currentFavoriteIndex = 0;
       stopAudio();
       
-      // Update button icons
       updatePlayStopButtons();
+      updatePlayFavoritesOnlyButton();
+    }
+    
+    function startAutoPlayFavoritesOnly(surahIndex) {
+      const savedInSurah = getSavedAyahsInSurah(surahIndex);
+      if (savedInSurah.length === 0) return;
+      
+      if (isAutoPlaying) stopAutoPlay();
+      
+      isPlayFavoritesOnly = true;
+      favoriteAyahsQueue = savedInSurah;
+      currentFavoriteIndex = 0;
+      isAutoPlaying = true;
+      currentSurahIndex = surahIndex;
+      currentAyahIndex = favoriteAyahsQueue[0];
+      
+      updatePlayStopButtons();
+      updatePlayFavoritesOnlyButton();
+      
+      const ayahElement = document.getElementById(`ayah-${currentSurahIndex}-${currentAyahIndex}`);
+      if (ayahElement) {
+        ayahElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      playAyahAudio(currentSurahIndex, currentAyahIndex, null, true);
+    }
+    
+    function updatePlayFavoritesOnlyButton() {
+      if (!playFavoritesBtn) return;
+      const savedInSurah = getSavedAyahsInSurah(currentSurahIndex);
+      const onBookTab = document.getElementById('tab-01') && document.getElementById('tab-01').checked;
+      if (onBookTab && savedInSurah.length > 0) {
+        playFavoritesBtn.style.display = 'flex';
+        if (isAutoPlaying && isPlayFavoritesOnly) {
+          playFavoritesBtn.classList.add('playing');
+        } else {
+          playFavoritesBtn.classList.remove('playing');
+        }
+      } else {
+        playFavoritesBtn.style.display = 'none';
+      }
+    }
+    
+    function displaySettings() {
+      const isDark = localStorage.getItem('darkMode') === 'true';
+      ayahContainer.innerHTML = `
+        <div class="settings-panel">
+          <h2 class="settings-title">الإعدادات</h2>
+          <div class="settings-card">
+            <div class="settings-row">
+              <span class="settings-label">حجم الخط</span>
+              <div class="settings-font-controls">
+                <button class="font-size-btn" id="settingsDecreaseFont" type="button"><span>−</span></button>
+                <span class="settings-font-value" id="settingsFontSizeValue">${currentFontSize}</span>
+                <button class="font-size-btn" id="settingsIncreaseFont" type="button"><span>+</span></button>
+              </div>
+            </div>
+            <div class="settings-row">
+              <span class="settings-label">الوضع الداكن</span>
+              <button class="settings-toggle ${isDark ? '' : 'off'}" id="darkModeToggle" type="button" aria-label="الوضع الداكن"></button>
+            </div>
+          </div>
+          <div class="settings-card">
+            <div class="settings-about">
+              مصحف — قرآن كريم<br>
+              <small>تطبيق بسيط لقراءة القرآن وتلاوته</small>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById('settingsDecreaseFont').addEventListener('click', () => {
+        updateFontSize(currentFontSize - 2);
+        const el = document.getElementById('settingsFontSizeValue');
+        if (el) el.textContent = currentFontSize;
+      });
+      document.getElementById('settingsIncreaseFont').addEventListener('click', () => {
+        updateFontSize(currentFontSize + 2);
+        const el = document.getElementById('settingsFontSizeValue');
+        if (el) el.textContent = currentFontSize;
+      });
+      const darkToggle = document.getElementById('darkModeToggle');
+      darkToggle.addEventListener('click', () => {
+        const nowDark = document.body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', nowDark ? 'true' : 'false');
+        darkToggle.classList.toggle('off', !nowDark);
+      });
     }
     
     function updatePlayStopButtons() {
@@ -1294,6 +1541,14 @@
       const saved = getSavedAyahs();
       const key = `${surahIndex}-${ayahIndex}`;
       return saved.some(item => item.key === key);
+    }
+    
+    function getSavedAyahsInSurah(surahIndex) {
+      const saved = getSavedAyahs();
+      return saved
+        .filter(item => item.surahIndex === surahIndex)
+        .map(item => item.ayahIndex)
+        .sort((a, b) => a - b);
     }
     
     function displaySavedAyahs() {
@@ -1431,6 +1686,7 @@
             saveAyah(surahIndex, ayahIndex);
             button.classList.add('active');
           }
+          updatePlayFavoritesOnlyButton();
         }
         
         // Handle share button
@@ -1536,6 +1792,8 @@
       setTimeout(() => {
         setupAyahObserver();
       }, 100);
+      
+      updatePlayFavoritesOnlyButton();
       
       // Event listeners are already attached via delegation, no need to reattach
       
@@ -1710,31 +1968,33 @@
       ayahDropdown.classList.toggle('active');
     });
     
-    // Font size controls
-    const increaseFontBtn = document.getElementById('increaseFont');
-    const decreaseFontBtn = document.getElementById('decreaseFont');
-    
-    // Get initial font size from localStorage or use default
+    // Font size and dark mode: load from localStorage
     let currentFontSize = parseInt(localStorage.getItem('ayahFontSize')) || 28;
     document.documentElement.style.setProperty('--ayah-font-size', currentFontSize + 'px');
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark-mode');
+    }
     
     function updateFontSize(size) {
-      // Limit font size between 16px and 48px
       if (size < 16) size = 16;
       if (size > 48) size = 48;
-      
       currentFontSize = size;
       document.documentElement.style.setProperty('--ayah-font-size', currentFontSize + 'px');
       localStorage.setItem('ayahFontSize', currentFontSize);
+      const label = document.getElementById('settingsFontSizeValue');
+      if (label) label.textContent = currentFontSize;
     }
     
-    increaseFontBtn.addEventListener('click', () => {
-      updateFontSize(currentFontSize + 2);
-    });
-    
-    decreaseFontBtn.addEventListener('click', () => {
-      updateFontSize(currentFontSize - 2);
-    });
+    // Play favorites only button
+    if (playFavoritesBtn) {
+      playFavoritesBtn.addEventListener('click', function() {
+        if (isAutoPlaying && isPlayFavoritesOnly) {
+          stopAutoPlay();
+        } else {
+          startAutoPlayFavoritesOnly(currentSurahIndex);
+        }
+      });
+    }
     
     // Tab navigation handlers
     document.getElementById('tab-01').addEventListener('change', function() {
@@ -1744,6 +2004,7 @@
         if (surahIndex > 0) {
           displaySurah(surahIndex);
         }
+        updatePlayFavoritesOnlyButton();
       }
     });
     
@@ -1756,11 +2017,7 @@
     
     document.getElementById('tab-04').addEventListener('change', function() {
       if (this.checked) {
-        const currentSurahText = currentSurah.textContent;
-        const surahIndex = surahs.indexOf(currentSurahText) + 1;
-        if (surahIndex > 0) {
-          displaySurah(surahIndex);
-        }
+        displaySettings();
       }
     });
     
