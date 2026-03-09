@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<title>Settings</title>
+<style>
+  :root {
+    --teal: #bdbde1;
+    --bg: #f8f8f8;
+    --panel: #fff;
+    --divider: #d9d9d9;
+    --label: 27292c;
+    --text: #000;
+  }
+  body.dark {
+    --bg: #121212;
+    --panel: #1e1e1e;
+    --divider: #333;
+    --label: #9e9e9e;
+    --text: #fff;
+    --teal: #26a69a;
+  }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.3s, color 0.3s;
+  }
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: var(--teal);
+    color: #fff;
+    text-align: center;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 44px;
+    height: 44px;
+  }
+  .navbar-back {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    background: #27292c;
+    border: 2px solid rgba(255,255,255,0.9);
+    border-radius: 6px;
+    line-height: 1;
+  }
+  .navbar-back:hover {
+    opacity: 0.9;
+    background: rgba(255,255,255,0.15);
+  }
+  .navbar-back:active {
+    opacity: 0.8;
+  }
+  .navbar-back svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+  }
+  .section {
+    margin-top: 20px;
+  }
+  .section-header {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--label);
+    padding: 6px 15px;
+    text-transform: uppercase;
+  }
+  .group {
+    background: var(--panel);
+    border-top: 1px solid var(--divider);
+    border-bottom: 1px solid var(--divider);
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border-top: 1px solid var(--divider);
+    font-size: 16px;
+  }
+  .row:first-child {
+    border-top: none;
+  }
+  .row label {
+    color: var(--text);
+  }
+  select {
+    font-size: 16px;
+    border: none;
+    background: transparent;
+    color: var(--label);
+    appearance: none;
+    outline: none;
+  }
+  /* Toggle switch */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 26px;
+  }
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 26px;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px; width: 20px;
+    left: 3px; bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+  input:checked + .slider {
+    background-color: var(--teal);
+  }
+  input:checked + .slider:before {
+    transform: translateX(20px);
+  }
+  @media (max-width: 600px) {
+    .row { font-size: 15px; }
+  }
+</style>
+</head>
+<body>
+  <header class="navbar">
+    <a class="navbar-back" href="index.html" aria-label="Back">
+      <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+    </a>
+    <span>Settings</span>
+  </header>
+
+  <!-- AUDIO -->
+  <div class="section">
+    <div class="section-header">AUDIO</div>
+    <div class="group">
+      <div class="row">
+        <label>Reciter</label>
+        <select id="reciter">
+          <option value="mishari">Mishari Al-Afasy</option>
+          <option value="alnufais">Abdullah Al Nufais</option>
+          <option value="sudais">Abdul Rahman Al-Sudais</option>
+          <option value="ghamdi">Saad Al-Ghamdi</option>
+          <option value="maher">Maher Al Muaiqly</option>
+          <option value="shuraim">Saud Al Shuraim</option>
+          <option value="dosari">Yasser Al Dosari</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISPLAY -->
+  <div class="section">
+    <div class="section-header">DISPLAY</div>
+    <div class="group">
+      <div class="row">
+        <label>Font Size</label>
+        <select id="fontSize">
+          <option value="small">Small</option>
+          <option value="medium" selected>Medium</option>
+          <option value="large">Large</option>
+        </select>
+      </div>
+      <div class="row">
+        <label>Night Mode</label>
+        <label class="switch">
+          <input type="checkbox" id="nightToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const body = document.body;
+  const toggle = document.getElementById('nightToggle');
+  const fontSize = document.getElementById('fontSize');
+  const reciterSelect = document.getElementById('reciter');
+
+  const fontPx = { small: 20, medium: 28, large: 34 };
+  fontSize.addEventListener('change', () => {
+    const px = fontPx[fontSize.value] || 28;
+    document.documentElement.style.setProperty('--ayah-font-size', px + 'px');
+    document.documentElement.style.fontSize = px + 'px';
+    localStorage.setItem('fontSize', fontSize.value);
+    localStorage.setItem('ayahFontSize', String(px));
+  });
+
+  // Night mode toggle (same key as index.html so it applies site-wide)
+  toggle.addEventListener('change', () => {
+    body.classList.toggle('dark', toggle.checked);
+    localStorage.setItem('darkMode', toggle.checked ? 'true' : 'false');
+  });
+
+  // Reciter
+  reciterSelect.addEventListener('change', () => {
+    localStorage.setItem('reciter', reciterSelect.value);
+  });
+
+  // Load saved settings (read darkMode for site-wide sync, fallback to legacy 'night')
+  const isDark = localStorage.getItem('darkMode') === 'true' || localStorage.getItem('night') === 'true';
+  if (isDark) {
+    toggle.checked = true;
+    body.classList.add('dark');
+  }
+  const savedPreset = localStorage.getItem('fontSize');
+  const savedPx = localStorage.getItem('ayahFontSize');
+  if (savedPreset && (savedPreset === 'small' || savedPreset === 'medium' || savedPreset === 'large')) {
+    fontSize.value = savedPreset;
+  } else if (savedPx) {
+    const n = parseInt(savedPx, 10);
+    if (n <= 22) fontSize.value = 'small';
+    else if (n <= 30) fontSize.value = 'medium';
+    else fontSize.value = 'large';
+  } else {
+    // No saved font size at all: default to medium
+    fontSize.value = 'medium';
+  }
+  const px = fontPx[fontSize.value] || 28;
+  document.documentElement.style.setProperty('--ayah-font-size', px + 'px');
+  document.documentElement.style.fontSize = px + 'px';
+  // Ensure defaults are written so index.html sees them
+  if (!savedPreset && !savedPx) {
+    localStorage.setItem('fontSize', fontSize.value);
+    localStorage.setItem('ayahFontSize', String(px));
+  }
+  const savedReciter = localStorage.getItem('reciter');
+  if (savedReciter) {
+    reciterSelect.value = savedReciter;
+  } else {
+    reciterSelect.value = 'mishari';
+    localStorage.setItem('reciter', 'mishari');
+  }
+</script>
+</body>
+</html>

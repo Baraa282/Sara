@@ -19,16 +19,16 @@
   }
   
   .tabs {
-      --background: #DAD7CD;
+      --background: #f4f5f6;
       --light-grey: #A3B18A;
       --wave-color: #A3B18A;
-    --height: 75px;
+    --height: 88px;
       --border-radius: 20px 20px 0 0;
     background: var(--background);
       width: 100%;
       max-width: 100%;
     height: var(--height);
-    padding: 0;
+    padding: 0 15px;
       position: fixed;
       bottom: 0;
       left: 0;
@@ -40,14 +40,13 @@
     justify-content: space-around;
     -webkit-box-align: center;
             align-items: center;
-    padding: 0 15px;
     box-sizing: border-box;
     overflow: hidden;
       z-index: 1000;
   }
   .tabs label {
-    width: 26px;
-    height: 26px;
+    width: 32px;
+    height: 32px;
     cursor: pointer;
     position: relative;
     display: -webkit-box;
@@ -106,8 +105,8 @@
     transition: stroke .15s linear .3s;
   }
   .tabs label .wave {
-    height: 26px;
-    width: 26px;
+    height: 32px;
+    width: 32px;
     position: absolute;
     overflow: hidden;
   }
@@ -301,7 +300,7 @@
       min-height: 100vh;
       margin: 0;
       padding: 0;
-      padding-bottom: 75px;
+      padding-bottom: 88px;
       padding-top: 55px;
       touch-action: manipulation;
     }
@@ -659,7 +658,7 @@
     body.dark-mode .ayah-text { color: #e0e0e0; }
     body.dark-mode .ayah-marker { color: #A3B18A; }
     body.dark-mode .loading { color: #b0b0b0; }
-    body.dark-mode .tabs { --background: #2d2d2d; --wave-color: #9B59B6; }
+    body.dark-mode .tabs { --background: #27292c; --wave-color: #9B59B6; }
     body.dark-mode .surah-dropdown,
     body.dark-mode .ayah-dropdown { background: #2d2d2d; border-color: #444; }
     body.dark-mode .surah-dropdown-item,
@@ -906,13 +905,18 @@
     /* Mobile responsive adjustments */
     @media (max-width: 768px) {
       .tabs {
-        --height: 70px;
+        --height: 84px;
         border-radius: 20px 20px 0 0;
       }
       
       .tabs label {
-        width: 24px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
+      }
+      
+      .tabs label .wave {
+        height: 28px;
+        width: 28px;
       }
       
       .header {
@@ -925,7 +929,7 @@
       
       body {
         padding-top: 50px;
-        padding-bottom: 70px;
+        padding-bottom: 84px;
       }
     }
     
@@ -1084,35 +1088,52 @@
     }
     
     // Audio playback functions - multiple API sources
+    // Reciter URL builders: each returns an array of URLs to try (surahPadded, ayahPadded, absoluteAyahNumber)
+    const RECITER_URLS = {
+      mishari: (surahPadded, ayahPadded, absoluteAyahNumber) => [
+        `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${absoluteAyahNumber}.mp3`,
+        `https://audio.qurancdn.com/afs/${absoluteAyahNumber}.mp3`,
+        `https://server8.mp3quran.net/afs/${surahPadded}${ayahPadded}.mp3`,
+        `https://server12.mp3quran.net/afs/${surahPadded}${ayahPadded}.mp3`,
+        `https://everyayah.com/data/Afasy_128kbps/${surahPadded}_${ayahPadded}.mp3`,
+        `https://everyayah.com/data/Afasy_128kbps/${surahPadded.replace(/^0+/, '')}_${ayahPadded.replace(/^0+/, '')}.mp3`,
+        `https://www.mp3quran.net/afs/${surahPadded}${ayahPadded}.mp3`
+      ],
+      sudais: (surahPadded, ayahPadded) => [
+        `https://audio.qurancdn.com/Sudais/mp3/${surahPadded}${ayahPadded}.mp3`
+      ],
+      ghamdi: (surahPadded, ayahPadded) => [
+        `https://server8.mp3quran.net/ghamdi/${surahPadded}${ayahPadded}.mp3`,
+        `https://everyayah.com/data/Ghamdi_128kbps/${surahPadded}_${ayahPadded}.mp3`,
+        `https://server12.mp3quran.net/ghamdi/${surahPadded}${ayahPadded}.mp3`
+      ],
+      alnufais: (surahPadded, ayahPadded) => [
+        `https://audio-cdn.tarteel.ai/quran/alnufais/${surahPadded}${ayahPadded}.mp3`
+      ],
+      maher: (surahPadded, ayahPadded) => [
+        `https://audio-cdn.tarteel.ai/quran/maherAlMuaiqly/${surahPadded}${ayahPadded}.mp3`
+      ],
+      shuraim: (surahPadded, ayahPadded) => [
+        `https://audio-cdn.tarteel.ai/quran/saudAlShuraim/${surahPadded}${ayahPadded}.mp3`
+      ],
+      dosari: (surahPadded, ayahPadded) => [
+        `https://audio-cdn.tarteel.ai/quran/yasserAlDosari/${surahPadded}${ayahPadded}.mp3`
+      ]
+    };
+
     function getAudioUrls(surahIndex, ayahIndex) {
-      // Return array of possible audio URLs to try
       const surahPadded = String(surahIndex).padStart(3, '0');
       const ayahPadded = String(ayahIndex).padStart(3, '0');
-      
-      // Calculate absolute ayah number (sum of all ayahs in previous surahs + current ayah)
       let absoluteAyahNumber = ayahIndex;
       for (let i = 1; i < surahIndex; i++) {
         if (quranData[i] && quranData[i].ayas) {
           absoluteAyahNumber += quranData[i].ayas.length;
         }
       }
-      
-      return [
-        // Quran.com CDN - most reliable
-        `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${absoluteAyahNumber}.mp3`,
-        // Alternative Quran.com format
-        `https://audio.qurancdn.com/afs/${absoluteAyahNumber}.mp3`,
-        // MP3Quran server format 1
-        `https://server8.mp3quran.net/afs/${surahPadded}${ayahPadded}.mp3`,
-        // MP3Quran server format 2
-        `https://server12.mp3quran.net/afs/${surahPadded}${ayahPadded}.mp3`,
-        // EveryAyah format 1
-        `https://everyayah.com/data/Afasy_128kbps/${surahPadded}_${ayahPadded}.mp3`,
-        // EveryAyah format 2
-        `https://everyayah.com/data/Afasy_128kbps/${surahIndex}_${ayahIndex}.mp3`,
-        // Alternative format
-        `https://www.mp3quran.net/afs/${surahPadded}${ayahPadded}.mp3`
-      ];
+      const reciter = localStorage.getItem('reciter') || 'mishari';
+      const builder = RECITER_URLS[reciter] || RECITER_URLS.mishari;
+      const urls = builder(surahPadded, ayahPadded, absoluteAyahNumber);
+      return urls;
     }
     
     function playAyahAudio(surahIndex, ayahIndex, button, autoPlay = false) {
@@ -2017,7 +2038,7 @@
     
     document.getElementById('tab-04').addEventListener('change', function() {
       if (this.checked) {
-        displaySettings();
+        window.location.href = 'setting.html';
       }
     });
     
